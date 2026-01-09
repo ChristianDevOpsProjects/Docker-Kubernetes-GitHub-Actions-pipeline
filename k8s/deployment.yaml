@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicd-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cicd-demo
+  template:
+    metadata:
+      labels:
+        app: cicd-demo
+    spec:
+      imagePullSecrets:      # ✅ Move here, sibling of containers
+        - name: ghcr-secret
+      containers:
+        - name: app
+          image: ghcr.io/ChristianDevOpsProjects/cicd-demo:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
